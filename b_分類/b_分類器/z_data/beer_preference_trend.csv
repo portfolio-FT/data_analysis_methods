@@ -1,0 +1,13 @@
+,area_of_growing,detailedness_of_foam,bitterness,preference_result
+sample1,German,detailed,sweet,11
+sample2,German,detailed,standard,6
+sample3,German,detailed,bitter,10
+sample4,German,rough,sweet,8
+sample5,German,rough,standard,9
+sample6,German,rough,bitter,3
+sample7,USA,detailed,sweet,
+sample8,USA,detailed,standard,2
+sample9,USA,detailed,bitter,4
+sample10,USA,rough,sweet,7
+sample11,USA,rough,standard,5
+sample12,USA,rough,bitter,1
