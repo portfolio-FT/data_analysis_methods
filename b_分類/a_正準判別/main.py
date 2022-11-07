@@ -14,8 +14,9 @@ DIM = len(COLS_X)
 
 
 def main():
-    # read data
+    # read and cleansing data
     df = read_data()
+    df = cleansing(df)
     
     # canonical discriminant analysis
     fig, df_w = canonical_discriminant_analysis(df)
@@ -29,6 +30,30 @@ def main():
 
 def read_data():
     df = pd.read_csv(FILE, index_col=0, header=0, encoding='shift-jis')
+    return df
+
+
+def cleansing(df):
+    # remove outliers
+    for count in range(0):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
+
+    # standardization
+    '''
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
+    '''
+    
     return df
 
 
@@ -90,8 +115,6 @@ def canonical_discriminant_analysis(df):
     # contribution rate
     cont_rate = np.array([ x/np.sum(l_abs) for x in l_abs ])
     cont_rate_cumu = np.cumsum(cont_rate)
-    
-    m = input(np.round(l,3))
     
     # extract 1st and 2nd components
     l1 = l[0]

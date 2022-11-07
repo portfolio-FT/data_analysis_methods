@@ -27,7 +27,7 @@ LEVEL_LIST = [round(num*0.1, 2) for num in NUMS]
 FILE = '../z_data/financial_indicator_2classes.csv'
 
 def main():
-    # read, cleansing, split data
+    # read, cleansing and split data
     df = read_data()
     df = cleansing(df)
     df_train,df_test = train_test_split(df, test_size=1/4)
@@ -75,16 +75,23 @@ def read_data():
 
 
 def cleansing(df):
-    # drop outliners
-    for col_x in COLS_X:
-        q1 = df[col_x].quantile(0.25)
-        q3 = df[col_x].quantile(0.75)
-        iqr = q3 - q1
-        lim_upper = q3 + 1.5*iqr
-        lim_lower = q1 - 1.5*iqr
-        
-        df = df[ df[col_x]>lim_lower ]
-        df = df[ df[col_x]<lim_upper ]   
+    # remove outliers
+    for count in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
+
+    # standardization
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
     
     return df
 
@@ -140,7 +147,7 @@ def calculate_accuracy_score(df_accuracy):
 
 def plot_logisiotc_model_and_label_plot(df, fig, b_vec, z_hat_vec):    
     # create logit function
-    x = np.linspace(-1000,1000,1000)
+    x = np.linspace(-3,3,1000)
     z = b_vec[0]
     for p in range(1, DIM):
         b = b_vec[p]

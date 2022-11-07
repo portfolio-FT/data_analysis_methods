@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 # settings
-FILE = '../z_data/company_evaluation.csv'
+FILE = '../z_data/financial_indicator2.csv'
 COLS_X = [
     'x1', 'x2', 'x3', 'x4', 'x5', 
     'x6', 'x7', 'x8', 'x9', 'x10', 
@@ -49,8 +49,8 @@ def cleansing(df):
     # astype
     df[COLS_X] = df[COLS_X].astype(float)
     
-    # remove outliners
-    for c in range(3):
+    # remove outliers
+    for count in range(3):
         for col in COLS_X:
             q1 = df[col].quantile(0.25)
             q3 = df[col].quantile(0.75)
@@ -62,6 +62,10 @@ def cleansing(df):
                 if value < lim_lower or lim_upper < value:
                     df.at[i,col] = np.nan
         df = df.dropna(subset=COLS_X)
+        
+    # standardization
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
     
     return df
 

@@ -23,10 +23,10 @@ def main():
     df_train, df_test = train_test_split(df, test_size=1/4)
     
     # gradient descent mothod
-    vec_b = gradient_descent_method(df)
+    vec_b = gradient_descent_method(df_train)
     
     # calculate accuracy
-    df_pred, accuracy = accuracy_evaluation(df, vec_b)
+    df_pred, accuracy = accuracy_evaluation(df_test, vec_b)
     
     # show results
     df_vec_b = pd.DataFrame(vec_b, index=['const']+COLS_X, columns=['vec_b'])
@@ -49,31 +49,27 @@ def read_data():
 
 def cleansing(df):
     # craete correct label
-    index = df.index
-    for i in index:
+    for i in df.index:
         classname = df.at[i, COL_CLASSNAME]
         df.at[i, COL_LABEL] = LABEL_DICT[classname]
 
-    # drop outliners
+    # remove outliers
     for count in range(3):
-        for col_x in COLS_X:
-            q1 = df[col_x].quantile(0.25)
-            q3 = df[col_x].quantile(0.75)
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
             iqr = q3 - q1
             lim_lower = q1 - 1.5*iqr
             lim_upper = q3 + 1.5*iqr
-            index = df.index
-            for i in index:
-                value = df.at[i,col_x]
+            for i in df.index:
+                value = df.at[i,col]
                 if value < lim_lower or lim_upper < value:
-                    df.at[i,col_x] = np.nan
-        df = df.dropna(how='any')
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
 
-    # standardize
-    for col_x in COLS_X:
-        mean = df[col_x].mean()
-        std = df[col_x].std()
-        df[col_x] = ( df[col_x] - mean ) / std
+    # standardization
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
     
     return df
 

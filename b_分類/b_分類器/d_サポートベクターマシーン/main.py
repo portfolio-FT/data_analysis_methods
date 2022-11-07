@@ -24,14 +24,14 @@ def main():
     df_train, df_test = train_test_split(df, test_size=1/4)
     
     # create model
-    model = craete_svc_model(df)
+    model = craete_svc_model(df_train)
     
     # create df_vec_b
     vec_b = model.coef_.reshape((DIM,1))
     df_vec_b = pd.DataFrame(vec_b, index=COLS_X, columns=['vec_b'])
     
     # accuracy evaluation
-    accuracy, df_accuracy = accuracy_evaluation(df, model)
+    accuracy, df_accuracy = accuracy_evaluation(df_test, model)
     print('')
     print('--------')
     print('b_vector')
@@ -50,16 +50,23 @@ def read_data():
 
 
 def cleansing(df):
-    # drop outliners
-    for col_x in COLS_X:
-        q1 = df[col_x].quantile(0.25)
-        q3 = df[col_x].quantile(0.75)
-        iqr = q3 - q1
-        lim_upper = q3 + 1.5*iqr
-        lim_lower = q1 - 1.5*iqr
-        
-        df = df[ df[col_x]>lim_lower ]
-        df = df[ df[col_x]<lim_upper ]   
+    # remove outliers
+    for count in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
+
+    # standardization
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
     
     # create label
     df[COL_LABEL] = df[COL_Y].replace(LABEL_DICT)

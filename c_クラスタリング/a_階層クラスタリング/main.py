@@ -30,7 +30,9 @@ def read_data():
 
 
 def cleansing(df):
-    df[COLS_X] = (df[COLS_X]-df[COLS_X].mean()) / df[COLS_X].std()
+    # standardization
+    for col in COLS_X:
+        df[col] = (df[col]-df[col].mean()) / df[col].std()
     return df    
 
 

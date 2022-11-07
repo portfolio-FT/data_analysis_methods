@@ -47,25 +47,24 @@ def read_data():
 
 def data_cleansing(df): 
     # settings
-    index = df.index
     cols_analysis = COLS_X + [COL_Y]
 
     # astype(float)
     df[cols_analysis] = df[cols_analysis].astype(float)
 
-    # remove outliners
-    for col in cols_analysis:
-        q1 = df[col].quantile(0.25)
-        q3 = df[col].quantile(0.75)
-        iqr = q3 - q1
-        lim_lower = q1 - 1.5*iqr
-        lim_upper = q3 + 1.5*iqr
-        for i in index:
-            value = df.at[i,col]
-            if value < lim_lower or lim_upper < value:
-                df.at[i,col] = np.nan
-    
-    df = df.dropna(subset=cols_analysis)
+    # remove outliers
+    for count in range(3):
+        for col in cols_analysis:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=cols_analysis)
 
     # standardization
     for col in cols_analysis:

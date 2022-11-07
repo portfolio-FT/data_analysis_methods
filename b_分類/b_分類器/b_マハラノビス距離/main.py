@@ -5,16 +5,15 @@ from sklearn.model_selection import train_test_split
 # settings
 FILE = '../z_data/financial_indicator.csv'
 COL_CLASS = 'condition'
-CLASS1 = 'good'
-CLASS2 = 'bad'
-LABEL_DICT = {CLASS1:1, CLASS2:0}
 COLS_X = ['FI2', 'FI5', 'FI6', 'FI8', 'FI11', 'FI13']
 DIM = len(COLS_X)
 
 
 def main():
-    # read data
+    # read, cleansing and split data
     df = read_data()
+    df = cleansing(df)
+    df_train, df_test = train_test_split(df, test_size=1/4)
     
     # analysis
     acccuracy, df_accuracy = mahalanobis(df)
@@ -29,6 +28,24 @@ def main():
 def read_data():
     # read data
     df = pd.read_csv(FILE, index_col=0, header=0, encoding='shift-jis')
+    return df
+
+
+def cleansing(df):
+    # remove outliers
+    for count in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
+    
     return df
 
 

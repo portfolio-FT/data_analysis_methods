@@ -11,22 +11,18 @@ from mlxtend.plotting import plot_decision_regions
 
 
 # settings
-COLS_X = [
-    'alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash',	
-    'magnesium', 'total_phenols', 'flavanoids', 'nonflavanoid_phenols', 
-    'proanthocyanins', 'color_intensity', 'hue', 
-    'od280/od315_of_diluted_wines', 'proline'
-]
-COL_CLASS = 'class'
-COL_LABEL = 'label'
-FILE = '../z_data/wine.csv'
+FILE = '../z_data/financial_indicator.csv'
+COL_CLASS = 'condition'
+COLS_X = ['FI2', 'FI5', 'FI6', 'FI8', 'FI11', 'FI13']
 CRITERION = 'gini'
+MAX_DEPTH = 3
 DIM = len(COLS_X)
 
 
 def main():
-    # read data
+    # read, cleansing and split data
     df = read_data()
+    df = cleansing(df)
     df_train, df_test = train_test_split(df, test_size= 1/4)
     
     # create decision tree model
@@ -37,6 +33,24 @@ def main():
 
 def read_data():
     df = pd.read_csv(FILE, encoding='shift-jis', index_col=0, header=0)
+    return df
+
+
+def cleansing(df):
+    # remove outliers
+    for count in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
+    
     return df
 
 

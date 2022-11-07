@@ -6,7 +6,7 @@ from factor_analyzer import FactorAnalyzer
 
 
 # settings
-FILE = '../z_data/company_evaluation.csv'
+FILE = '../z_data/financial_indicator2.csv'
 COLS_X = [
     'x1', 'x2', 'x3', 'x4', 'x5', 
     'x6', 'x7', 'x8', 'x9', 'x10', 
@@ -49,23 +49,25 @@ def cleansing(df):
     # astype
     df[COLS_X] = df[COLS_X].astype(float)
     
-    # remoce outliners
-    for col in COLS_X:
-        q1 = df[col].quantile(0.25)
-        q3 = df[col].quantile(0.75)
-        iqr = q3 - q1
-        lim_lower = q1 - 1.5*iqr
-        lim_upper = q3 + 1.5*iqr
-        for i in df.index:
-            value = df.at[i,col]
-            if value < lim_lower or lim_upper < value:
-                df.at[i,col] = np.nan
-    df = df.dropna(subset=COLS_X)
+    # remove outliers
+    for count in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
 
     # standardization
     df_st = pd.DataFrame(columns=COLS_X)
     for col in COLS_X:
         df_st[col] = (df[col] - df[col].mean()) / df[col].std()
+        
     df_st[COL_CLASS] = df[COL_CLASS]
     
     # create index
