@@ -49,18 +49,19 @@ def cleansing(df):
     # astype
     df[COLS_X] = df[COLS_X].astype(float)
     
-    # remoce outliners
-    for col in COLS_X:
-        q1 = df[col].quantile(0.25)
-        q3 = df[col].quantile(0.75)
-        iqr = q3 - q1
-        lim_lower = q1 - 1.5*iqr
-        lim_upper = q3 + 1.5*iqr
-        for i in df.index:
-            value = df.at[i,col]
-            if value < lim_lower or lim_upper < value:
-                df.at[i,col] = np.nan
-    df = df.dropna(subset=COLS_X)
+    # remove outliners
+    for c in range(3):
+        for col in COLS_X:
+            q1 = df[col].quantile(0.25)
+            q3 = df[col].quantile(0.75)
+            iqr = q3 - q1
+            lim_lower = q1 - 1.5*iqr
+            lim_upper = q3 + 1.5*iqr
+            for i in df.index:
+                value = df.at[i,col]
+                if value < lim_lower or lim_upper < value:
+                    df.at[i,col] = np.nan
+        df = df.dropna(subset=COLS_X)
     
     return df
 
