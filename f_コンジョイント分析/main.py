@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 
@@ -262,5 +262,6 @@ def plot_results(
     
     return fig
     
-    
-main()
+
+if __name__ == '__main__':
+    main()

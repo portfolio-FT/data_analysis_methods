@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 # settings
@@ -97,4 +97,5 @@ def quantification_theory_type3(df):
     return fig 
     
     
-main()
+if __name__ == '__main__':
+    main()

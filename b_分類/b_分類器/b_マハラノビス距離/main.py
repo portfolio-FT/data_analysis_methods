@@ -141,4 +141,6 @@ def mahalanobis(df):
     
     return accuracy, df_accuracy
     
-main() 
+
+if __name__ == '__main__':
+    main() 

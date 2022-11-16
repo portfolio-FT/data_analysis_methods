@@ -140,5 +140,6 @@ def accuracy_evaluation(df, vec_b):
     
     return df_pred, accuracy
     
-    
-main()
+
+if __name__ == '__main__':
+    main()

@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 # settings
@@ -145,4 +145,5 @@ def principal_components_analysis(df):
     return df_l, df_w, df_score, fig
        
 
-main()
+if __name__ == '__main__':
+    main()

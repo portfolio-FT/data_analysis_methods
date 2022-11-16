@@ -1,9 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-from sklearn.model_selection import train_test_split
 
 
 # settings1 columns and dimsension
@@ -57,10 +57,10 @@ def main():
     fig = plot_logisiotc_model_and_label_plot(df, fig, b_vec, z_hat_vec)
     
     # plot ROC-curve
-    fig = plot_ROC_curve(df_accuracy, fig)
+    fig = plot_roc_curve(df_accuracy, fig)
     
     # plot Recall-Precision curve
-    fig = plot_Recall_Precision_curve(df_accuracy, fig)
+    fig = plot_recall_precision_curve(df_accuracy, fig)
     
     # show results
     print(summary)
@@ -167,7 +167,7 @@ def plot_logisiotc_model_and_label_plot(df, fig, b_vec, z_hat_vec):
     return fig
       
 
-def plot_ROC_curve(df_accuracy, fig):
+def plot_roc_curve(df_accuracy, fig):
     # initial settings
     tpr_list = []
     fpr_list = []
@@ -194,7 +194,7 @@ def plot_ROC_curve(df_accuracy, fig):
     return fig
 
 
-def plot_Recall_Precision_curve(df_accuracy, fig):
+def plot_recall_precision_curve(df_accuracy, fig):
     # settings
     n = len(df_accuracy)
     recall_list = []
@@ -224,4 +224,5 @@ def plot_Recall_Precision_curve(df_accuracy, fig):
     return fig
             
     
-main()
+if __name__ == '__main__':
+    main()

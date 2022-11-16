@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.cluster.hierarchy import linkage, dendrogram
 
 
@@ -42,5 +42,6 @@ def hierarchical_method(df):
     dend = dendrogram(result, labels=df.index)
     plt.show()
  
-    
-main()
+
+if __name__ == '__main__':
+    main()

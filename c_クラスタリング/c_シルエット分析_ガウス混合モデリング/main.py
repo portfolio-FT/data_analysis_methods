@@ -1,9 +1,9 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.cluster.hierarchy import linkage, dendrogram
 from sklearn.cluster import KMeans
-from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_samples, silhouette_score
+from sklearn.mixture import GaussianMixture
 
 
 # settings
@@ -117,5 +117,6 @@ def gaussian_mixture_model(df):
     
     return df_cluster_predict, df_center_of_gravity
     
-    
-main()
+
+if __name__ == '__main__':
+    main()

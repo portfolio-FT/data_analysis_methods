@@ -1,13 +1,13 @@
+import graphviz
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import graphviz
 import pydotplus
 from sklearn import ensemble
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.model_selection import train_test_split
 from mlxtend.plotting import plot_decision_regions
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 
 # settings
@@ -155,4 +155,5 @@ def gbdt_model(df_train, df_test):
     plt.show()
      
 
-main() 
+if __name__ == '__main__':
+    main() 

@@ -1,8 +1,7 @@
+from factor_analyzer import FactorAnalyzer
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from factor_analyzer import FactorAnalyzer
-
 
 
 # settings
@@ -150,4 +149,5 @@ def principal_factor_method(df_st):
     return df_fa_load
 
 
-main()
+if __name__ == '__main__':
+    main()

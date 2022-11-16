@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from sklearn.cluster import KMeans
 
 
@@ -82,4 +82,6 @@ def k_means(df):
    
     return df_cluster_predict, df_center_of_gravity
     
-main()
+    
+if __name__ == '__main__':
+    main()

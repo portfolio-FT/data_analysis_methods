@@ -1,6 +1,6 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 # settings
@@ -165,5 +165,5 @@ def canonical_discriminant_analysis(df):
     return fig, df_w
     
     
-
-main()
+if __name__ == '__main__':
+    main()

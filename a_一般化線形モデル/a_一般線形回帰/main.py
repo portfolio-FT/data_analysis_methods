@@ -1,13 +1,13 @@
-import numpy as np
-import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+import pandas as pd
+from scipy.stats import norm
+import seaborn as sns
+from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from statsmodels.stats.stattools import durbin_watson
-from sklearn.model_selection import train_test_split
-from scipy.stats import norm
 
 
 # settings
@@ -186,4 +186,5 @@ def regression_diagnosis(y, y_pred, residual, fig):
     return fig
 
 
-main()
+if __name__ == '__main__':
+    main()
