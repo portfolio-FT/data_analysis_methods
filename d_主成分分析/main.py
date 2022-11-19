@@ -79,7 +79,7 @@ def principal_components_analysis(df):
     # create matrixes
     mat = np.array(df)
     mat_x = np.array(df[COLS_X])
-    mat_x_st = ( (mat_x-mat_x.mean()) / mat_x.std() )
+    mat_x_st = (mat_x-mat_x.mean()) / mat_x.std()
     
     # create correlation-coefficient matrix
     mat_r = np.corrcoef(mat_x,rowvar=False)
